@@ -1,1 +1,46 @@
 # Eduardo_Assignment_1_ANA_515
+
+---
+title: "ANA 515 Assignment 1"
+author: Eduardo Dischinger
+date: 2022
+output: 
+   html_document:
+          theme:
+              bootswatch: "cosmo"
+
+---
+
+```{r, include = FALSE}
+library("tidyverse")
+library("knitr")
+library("bslib")
+library("dplyr")
+library("ggplot2")
+```
+
+```{r, include = FALSE}
+url = "https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv"
+gundeaths = read_csv(url)
+```
+
+```{r, echo = FALSE}
+youth = gundeaths %>%
+  filter(age <= 65)
+summary(youth)
+```
+
+We have data about `r nrow(gundeaths)` individuals killed by guns. Only `r nrow(gundeaths) - nrow(youth)` are older than 65. The distribution of the remainder is shown below:
+
+```{r youth-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(age)) + 
+geom_freqpoly(binwidth = 1)
+```
+
+```{r race-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(fct_infreq(race) %>% fct_rev())) + 
+geom_bar() + coord_flip() + 
+labs(x = "Victim race")
+```
